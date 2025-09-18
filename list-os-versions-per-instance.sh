@@ -1,11 +1,11 @@
+#!/bin/bash
+
 # This script shows the OS version for all running instances in the current region.
 # You could simply use the command below but it will not show the instance names, only instance-ids:
 # `aws ssm describe-instance-information --query \ 
 # "InstanceInformationList[].{InstanceId:InstanceId,PlatformType:PlatformType,PlatformName:PlatformName,PlatformVersion:PlatformVersion}" --output table`
 # So we are combining the output from the two queries here to show both the OS version and the corresponding instance name.
 # Prerequisites: you must be logged into AWS CLI with a specified default region and (if applicable) a specified profile.
-
-#!/bin/bash
 
 # create a temporary file for the data
 temp_file=$(mktemp)
