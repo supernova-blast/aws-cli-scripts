@@ -7,6 +7,8 @@
 # So we are combining the output from the two queries here to show both the OS version and the corresponding instance name.
 # Prerequisites: you must be logged into AWS CLI with a specified default region and (if applicable) a specified profile.
 
+set -euo pipefail
+
 # create a temporary file for the data
 temp_file=$(mktemp)
 
