@@ -14,7 +14,7 @@ regions=$(aws ec2 describe-regions --query "Regions[].RegionName" --output text)
 for region in $regions; do
   echo ""
   echo "Checking region: $region"
-  echo "--------------------------"
+  echo "---------------------------------"
 
   # query running instances, printing: InstanceId, Name tag (or (no name)), InstanceType
   instances=$(
@@ -26,7 +26,11 @@ for region in $regions; do
   )
 
   if [ -n "${instances:-}" ]; then
-    echo "$instances"
+    {
+      echo -e "InstanceId\tName\tInstanceType"
+      echo "$instances" \
+      | awk -F'\t' 'BEGIN{OFS="\t"} { if ($2=="" || $2=="None" || $2=="-") $2="(no name)"; print }'
+    } | column -t -s $'\t'
   else
     echo "No running instances found"
   fi
