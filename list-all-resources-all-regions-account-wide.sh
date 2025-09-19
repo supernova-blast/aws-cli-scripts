@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # This script shows all resources account-wide in all available regions.
+# It does not print the result to the terminal, instead it saves the result to a new file in the current dir.
 # Prerequisites: you must be logged into AWS CLI with a specified default region and (if applicable) a specified profile.
 
-# output file
 output_file="aws_resources_report_$(date +'%d_%b_%Y').txt"
 
 # regions array
 mapfile -t regions < <(aws ec2 describe-regions --query "Regions[].RegionName" --output text | tr '\t' '\n' | sort)
 
-# account
+# get account-id
 account_id=$(aws sts get-caller-identity --query "Account" --output text)
 
 # Glacier-supported regions (avoid endpoint errors)
