@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# This script prints all State Manager Associations per each region.
+# Prerequisites: you must be logged into AWS CLI with a specified profile (if applicable).
+
 # List all regions
 regions=$(aws ec2 describe-regions --query 'Regions[].RegionName' --output text)
 for r in $regions; do
