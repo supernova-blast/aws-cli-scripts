@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # List all running EC2 instances across all AWS regions. Shows InstanceId, Name tag, and InstanceType.
-# Prerequisites: you must be logged into AWS CLI with a specified default region and (if applicable) a specified profile.
+# Prerequisites: you must be logged into AWS CLI with a specified profile (if applicable).
 
 set -euo pipefail
 
