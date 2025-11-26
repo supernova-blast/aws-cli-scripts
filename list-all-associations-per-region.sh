@@ -3,27 +3,27 @@
 # This script prints all State Manager Associations per each region.
 # Prerequisites: you must be logged into AWS CLI with a specified profile (if applicable).
 
-# List all regions
-regions=$(aws ec2 describe-regions --query 'Regions[].RegionName' --output text)
-for r in $regions; do
-  echo "=== $r ===" >&2
-  # Get all association IDs in the region
-  aws ssm list-associations \
-    --region "$r" \
-    --output json \
-  | jq -r '.Associations[].AssociationId' \
-  | while read -r assoc_id; do
-      [ -z "$assoc_id" ] && continue
-      # Describe each association and filter only ones with Overview.Status == "Success"
-      aws ssm describe-association \
-        --region "$r" \
-        --association-id "$assoc_id" \
-        --output json \
-      | jq -r --arg region "$r" '
-          .AssociationDescription as $a
-          | $a.Overview.Status as $st
-          | select($st == "Success")
-          | "\($region)\t\($a.AssociationId)\t\($a.Name)\t\($st)\t\($a.ScheduleExpression // "-")"
-        '
-    done
+for r in $(aws ec2 describe-regions --query 'Regions[].RegionName' --output text); do
+  echo "=== $r ==="
+  aws ssm list-associations --region "$r" --output json |
+    jq -r --arg region "$r" '
+      .Associations[] |
+      {
+        region: $region,
+        id: .AssociationId,
+        name: .Name,
+        status: .Overview.Status,
+        sched: (.ScheduleExpression // "-")
+      } |
+      @json' |
+  while read -r row; do
+    jq -r '
+      .region   as $r |
+      .id       as $id |
+      .name     as $n |
+      .status   as $s |
+      .sched    as $sch |
+      @sh "\($r) \($id) \($n) \($s) \($sch)"' <<< "$row" |
+    xargs printf "%-12s %-36s %-45s %-10s %-20s\n"
+  done
 done
