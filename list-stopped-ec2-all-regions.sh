@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script finds and lists all stopped EC2 instances in each region, prints instance ID, Name tag (if present), and instance type.
-# Prerequisites: you must be logged into AWS CLI with a specified default region and (if applicable) a specified profile.
+# Prerequisites: you must be logged into AWS CLI with a specified profile (if applicable).
 
 echo "Finding all stopped EC2 instances across all regions..."
 echo "======================================================"
