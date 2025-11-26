@@ -2,7 +2,7 @@
 
 # This script shows all resources account-wide in all available regions.
 # It does not print the result to the terminal, instead it saves the result to a new file in the current dir.
-# Prerequisites: you must be logged into AWS CLI with a specified default region and (if applicable) a specified profile.
+# Prerequisites: you must be logged into AWS CLI with a specified profile (if applicable).
 
 output_file="aws_resources_report_$(date +'%d_%b_%Y').txt"
 
